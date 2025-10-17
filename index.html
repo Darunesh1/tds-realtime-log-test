@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Page</title>
+    <!-- Bootstrap 5 CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for a professional look */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+            color: #343a40; /* Dark gray text */
+        }
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 30px;
+            background-color: #ffffff; /* White background for content */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        h1, h2 {
+            color: #007bff; /* Bootstrap primary blue for headings */
+            margin-bottom: 20px;
+        }
+        .loading-spinner {
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            height: 100px; /* Spinner height */
+        }
+        .error-message {
+            display: none; /* Hidden by default */
+            color: #dc3545; /* Bootstrap danger red for errors */
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .content-area {
+            min-height: 200px; /* Ensure some space for content */
+            display: none; /* Hidden by default */
+            padding: 20px;
+            border: 1px solid #dee2e6; /* Light gray border */
+            border-radius: 5px;
+            background-color: #e9ecef; /* Slightly darker background for content */
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header class="text-center mb-5">
+            <h1>Welcome to Our Simple Application</h1>
+            <p class="lead">A responsive and professional single-page application.</p>
+        </header>
+
+        <section id="loadingSection" class="loading-spinner">
+            <!-- Bootstrap spinner for loading indication -->
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </section>
+
+        <section id="errorSection" class="error-message">
+            <!-- Error message will be displayed here -->
+            An unexpected error occurred. Please try again later.
+        </section>
+
+        <section id="contentSection" class="content-area">
+            <h2>Main Content Area</h2>
+            <p>This is where the dynamic content will be loaded. For demonstration purposes, we'll simulate a delay and then display some text.</p>
+            <p>This section is designed to be responsive, adapting to different screen sizes.</p>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h3>Feature 1</h3>
+                    <p>Brief description of the first feature. It's designed to be concise and informative.</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h3>Feature 2</h3>
+                    <p>Brief description of the second feature. This showcases layout flexibility.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center mt-5 mb-3 text-muted">
+        <p>&copy; 2023 Simple App. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript for simulating loading and handling content display
+
+        // Function to simulate an asynchronous operation (like fetching data)
+        function simulateLoad() {
+            return new Promise((resolve, reject) => {
+                // Simulate a network delay of 2 seconds
+                setTimeout(() => {
+                    // Simulate a potential error (uncomment to test error handling)
+                    // const shouldError = Math.random() > 0.7; // 30% chance of error
+                    const shouldError = false; // Set to false for normal operation
+
+                    if (shouldError) {
+                        reject(new Error("Failed to load data."));
+                    } else {
+                        resolve("Data loaded successfully!");
+                    }
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+        }
+
+        // DOM elements
+        const loadingSection = document.getElementById('loadingSection');
+        const errorSection = document.getElementById('errorSection');
+        const contentSection = document.getElementById('contentSection');
+
+        // Function to show a specific section and hide others
+        function displaySection(sectionToShow) {
+            loadingSection.style.display = 'none';
+            errorSection.style.display = 'none';
+            contentSection.style.display = 'none';
+
+            if (sectionToShow === 'loading') {
+                loadingSection.style.display = 'flex'; // Use flex to center spinner
+            } else if (sectionToShow === 'error') {
+                errorSection.style.display = 'block';
+            } else if (sectionToShow === 'content') {
+                contentSection.style.display = 'block';
+            }
+        }
+
+        // Main execution logic
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initially show the loading spinner
+            displaySection('loading');
+
+            // Simulate loading data
+            simulateLoad()
+                .then((message) => {
+                    console.log(message); // Log success message to console
+                    // If successful, display the content
+                    displaySection('content');
+                })
+                .catch((error) => {
+                    console.error("Error:", error.message); // Log error to console
+                    // If an error occurs, display the error message
+                    displaySection('error');
+                });
+        });
+    </script>
+
+</body>
+</html>
